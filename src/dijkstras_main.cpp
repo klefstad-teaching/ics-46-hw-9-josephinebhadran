@@ -23,8 +23,7 @@ void run_test_from_file(const string& filename, int source, int destination) {
 }
 
 int main() {
-    // Run tests with provided test files
-    run_test_from_file("small.txt", 0, 2);
+    run_test_from_file("medium.txt", 0, 3);
 
     return 0;
 }
