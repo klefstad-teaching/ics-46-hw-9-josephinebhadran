@@ -2,6 +2,7 @@
 #include <queue>
 #include <set>
 #include <algorithm>
+#include <cmath>
 
 void error(string word1, string word2, string msg) {
 
@@ -36,8 +37,35 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     return dp[len1][len2] <= d;
 }
 
-bool is_adjacent(const string& word1, const string& word2) {
-    return edit_distance_within(word1, word2, 1);
+// bool is_adjacent(const string& word1, const string& word2) {
+//     return edit_distance_within(word1, word2, 1);
+// }
+
+bool is_adjacent(const std::string& word1, const std::string& word2) {
+    int len1 = word1.length(), len2 = word2.length();
+    if (std::abs(len1 - len2) > 1) return false; // if length difference differs by more than one letter
+
+    int diff_count = 0;  // num diff chars
+    size_t i = 0, j = 0; // 2 pointers for both words
+
+    while (i < len1 && j < len2) {
+        if (word1[i] != word2[j]) {
+            diff_count++;  // Found a difference
+            if (diff_count > 1) return false;
+
+            // if lengths differ, advance the longer word's pointer
+            if (len1 > len2) i++;  // deleted letter (word1 longer)
+            else if (len2 > len1) j++;  // added letter (word2 longer)
+            else { i++; j++; }  // replace letter (same length)
+        } else {
+            i++; j++; // move normally if characters match
+        }
+    }
+
+    // if there's an extra char at the end
+    if (i < len1 || j < len2) diff_count++;
+
+    return diff_count == 1;
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
@@ -99,16 +127,12 @@ void print_word_ladder(const vector<string>& ladder) {
 void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "words.txt");
-    // vector<string> lad = generate_word_ladder("cat", "mat", word_list);
-    // print_word_ladder(lad);
-    // print_word_ladder((generate_word_ladder("cat", "dog", word_list)));
-    // print_word_ladder(generate_word_ladder("cat", "map", word_list));
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
-    // my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
-    // my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
-    // my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
-    // my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
-    // my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+    my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
+    my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
+    my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
+    my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
+    my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
     /*
     g++ ladder.cpp ladder_main.cpp -o main
     */
