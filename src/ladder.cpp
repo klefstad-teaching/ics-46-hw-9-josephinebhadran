@@ -42,7 +42,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 // }
 
 bool is_adjacent(const std::string& word1, const std::string& word2) {
-    if (word1 == word2) { return false; } // false if words are the same
+    if (word1 == word2) { return true; } // false if words are the same
     int len1 = word1.length(), len2 = word2.length();
     if (std::abs(len1 - len2) > 1) { return false; } // false if length difference differs by more than one letter
 
@@ -55,8 +55,8 @@ bool is_adjacent(const std::string& word1, const std::string& word2) {
             if (diff_count > 1) return false;
 
             // if lengths differ, advance the longer word's pointer
-            if (len1 > len2) i++;  // deleted letter (word1 longer)
-            else if (len2 > len1) j++;  // added letter (word2 longer)
+            if (len1 > len2) { i++; } // deleted letter (word1 longer)
+            else if (len2 > len1) { j++; } // added letter (word2 longer)
             else { i++; j++; }  // replace letter (same length)
         } else {
             i++; j++; // move normally if characters match
