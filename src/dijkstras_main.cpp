@@ -24,6 +24,8 @@ void run_test_from_file(const string& filename, int source, int destination) {
 
 int main() {
     run_test_from_file("medium.txt", 0, 3);
-
+    /*
+    g++ dijkstras.cpp dijkstras_main.cpp -o dmain
+    */
     return 0;
 }

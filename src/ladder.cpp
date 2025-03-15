@@ -5,7 +5,7 @@
 #include <cmath>
 
 void error(string word1, string word2, string msg) {
-
+    cerr << word1 << " and " << word2 << ": " << msg << std::endl;
 }
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d) {
@@ -37,29 +37,36 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     return dp[len1][len2] <= d;
 }
 
-// bool is_adjacent(const string& word1, const string& word2) {
-//     return edit_distance_within(word1, word2, 1);
-// }
-
 bool is_adjacent(const std::string& word1, const std::string& word2) {
-    if (word1 == word2) { return true; } // false if words are the same
-    int len1 = word1.length(), len2 = word2.length();
-    if (std::abs(len1 - len2) > 1) { return false; } // false if length difference differs by more than one letter
+    if (word1 == word2) { return true; } // true if words are the same
+    int len1 = word1.length();
+    int len2 = word2.length();
+    if (std::abs(len1 - len2) > 1) { return false; } // false if lengths differ by more than one letter
 
     int diff_count = 0;  // num diff chars
-    size_t i = 0, j = 0; // 2 pointers for both words
+
+    // index for both words
+    size_t i = 0;
+    size_t j = 0; 
 
     while (i < len1 && j < len2) {
         if (word1[i] != word2[j]) {
             diff_count++;  // found a difference
-            if (diff_count > 1) return false;
+            if (diff_count > 1) { return false; }
 
-            // if lengths differ, advance the longer word's pointer
-            if (len1 > len2) { i++; } // deleted letter (word1 longer)
-            else if (len2 > len1) { j++; } // added letter (word2 longer)
-            else { i++; j++; }  // replace letter (same length)
+            // if lengths differ, advance longer word's index
+            if (len1 > len2) {
+                i++; // deleted letter (word1 longer)
+            } else if (len2 > len1) {
+                j++; // added letter (word2 longer)
+            } else { 
+                // replace letter (same length)
+                i++; 
+                j++; 
+            }  
         } else {
-            i++; j++; // move normally if characters match
+            i++; 
+            j++; // move normally if characters match
         }
     }
 
@@ -100,7 +107,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 void load_words(set<string> & word_list, const string& file_name) {
     ifstream file(file_name);
     if (!file) {
-        // error("unable to open input file");
         std::cerr << "Error opening file." << std::endl;
     }
 

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include <algorithm>
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
     int vertices = G.numVertices;
@@ -39,18 +38,24 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
 }
 
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination) {
-    vector<int> path;
+    stack<int> path;
+    vector<int> result;
 
     if (distances[destination] == INF) {
-        return path;
+        return result;
     }
 
     for (int i = destination; i != -1; i = previous[i]) {
-        path.push_back(i);
+        path.push(i);
     }
 
-    reverse(path.begin(), path.end());
-    return path;
+    while (!path.empty()) {
+        int curr = path.top();
+        path.pop();
+        result.push_back(curr);
+    }
+
+    return result;
 }
 
 void print_path(const vector<int>& v, int total) {
