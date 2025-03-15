@@ -89,9 +89,7 @@ void print_word_ladder(const vector<string>& ladder) {
 
     std::cout << "Word ladder found: ";
     for (size_t i = 0; i < ladder.size(); ++i) {
-        if (i < ladder.size() - 1) {
-            std::cout << ladder[i] << " ";
-        }
+        std::cout << ladder[i] << " ";
     }
     std::cout << std::endl;
 }
@@ -104,6 +102,7 @@ void verify_word_ladder() {
     // vector<string> lad = generate_word_ladder("cat", "mat", word_list);
     // print_word_ladder(lad);
     // print_word_ladder((generate_word_ladder("cat", "dog", word_list)));
+    // print_word_ladder(generate_word_ladder("cat", "map", word_list));
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
     // my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
     // my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
